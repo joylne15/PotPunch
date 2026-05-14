@@ -111,7 +111,7 @@ const MemberTable = ({ members, target, onDelete, onViewHistory }) => {
                 </td>
               </tr>
             ) : (
-              filtered.map((member, index) => {
+              filter.map((member, index) => {
                 const paid      = Number(member.paid);
                 const remaining = target - paid;
                 const pct       = Math.min(
