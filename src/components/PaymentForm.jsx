@@ -1,43 +1,92 @@
-import React from "react"; 
+import React, { useState } from "react";
 
-const PaymentForm = () => {
+const PaymentForm = ({ members = [], target = 130000, onPayment = () => {} }) =>  {
+  const [memberId, setMemberId] = useState("");
+  const [amount, setAmount] = useState("");
+  const [msg, setMsg] = useState(null);
+
+  const unpaidMembers = members.filter((m) => m.paid < target);
+
+  function flash(type, text) {
+    setMsg({ type, text });
+    setTimeout(() => setMsg(null), 3000);
+  }
+
+  function handlePay() {
+    if (!memberId) {
+      flash("error", "Please select a member");
+      return;
+    }
+    const amt = parseInt(amount);
+    if (!amt || amt <= 0) {
+      flash("error", "Please enter a valid amount");
+      return;
+    }
+    const member = members.find((m) => m.id === parseInt(memberId));
+    const remaining = target - member.paid;
+    if (amt > remaining) {
+      flash(
+        "error",
+        "Amount exceeds remaining balance of " + remaining.toLocaleString() + "/="
+      );
+      return;
+    }
+    onPayment(parseInt(memberId), amt);
+    flash(
+      "success",
+      "✅ " + amt.toLocaleString() + "/= recorded for " + member.name
+    );
+    setMemberId("");
+    setAmount("");
+  }
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold mb-4">Make a Payment</h2>
-      <form>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
-            Amount
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="amount"
-            type="number"
-            placeholder="Enter amount"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="member">
-            Member
-          </label>
-          <select
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="member"
-          >
-            <option value="">Select a member</option>
-            <option value="1">Joyce Wildad</option>
-            <option value="2">Joyce David</option>
-          </select>
-        </div>
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition"
-          type="submit"
+    <div className="bg-white rounded-xl border border-gray-200 p-5 shadow-sm">
+      <h2 className="text-sm font-semibold text-gray-700 mb-4"> Record Payment</h2>
+
+      <select
+        value={memberId}
+        onChange={(e) => setMemberId(e.target.value)}
+        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500 bg-white"
+      >
+        <option value="">-- Select member --</option>
+        {unpaidMembers.map((m) => (
+          <option key={m.id} value={m.id}>
+            {m.name} (owes {(target - m.paid).toLocaleString()}/=)
+          </option>
+        ))}
+      </select>
+
+      <input
+        type="number"
+        value={amount}
+        onChange={(e) => setAmount(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handlePay()}
+        placeholder="Amount e.g. 50000"
+        className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm mb-3 focus:outline-none focus:border-green-500 focus:ring-1 focus:ring-green-500"
+      />
+
+      <button
+        onClick={handlePay}
+        className="w-full text-white rounded-lg py-2 text-sm font-medium transition-colors duration-200"
+        style={{ background: "#1D9E75" }}
+        onMouseOver={(e) => (e.target.style.background = "#0F6E56")}
+        onMouseOut={(e) => (e.target.style.background = "#1D9E75")}
+      >
+        Record Payment
+      </button>
+
+      {msg && (
+        <p
+          className={`text-xs mt-2 font-medium ${
+            msg.type === "error" ? "text-red-500" : "text-green-600"
+          }`}
         >
-          Submit Payment
-        </button>
-      </form>
+          {msg.text}
+        </p>
+      )}
     </div>
   );
-};
+}
 
 export default PaymentForm;

@@ -1,12 +1,40 @@
 import React from "react";
-const StartCard = () => {
+
+const StatsCards = ({ totalMembers, totalCollected, totalRemaining }) => {
+  const cards = [
+    {
+      label: "Total Members",
+      value: totalMembers,
+
+      color: "text-green-700",
+    },
+    {
+      label: "Total Collected",
+      value: (totalCollected || 0).toLocaleString() + "/=",
+      color: "text-green-700",
+    },
+    {
+      label: "Total Remaining",
+      value: (totalRemaining || 0).toLocaleString() + "/=",
+      color: "text-amber-600",
+    },
+  ];
+
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md text-center">
-      <h2 className="text-2xl font-bold mb-4">Welcome to the Money Collection System</h2>
-      <p className="text-gray-600 mb-6">Track contributions and manage members efficiently.</p>
-      <button className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition">Get Started</button>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      {cards.map((card) => (
+        <div
+          key={card.label}
+          className="bg-white rounded-xl border border-gray-200 p-5 text-center shadow-sm hover:-translate-y-1 transition-transform duration-200"
+        >
+          <div className="text-2xl mb-2">{card.icon}</div>
+          <p className="text-xs text-gray-400 uppercase tracking-wider mb-1">
+            {card.label}
+          </p>
+          <p className={`text-2xl font-bold ${card.color}`}>{card.value}</p>
+        </div>
+      ))}
     </div>
   );
-};
-
-export default StartCard;
+}
+export default StatsCards;

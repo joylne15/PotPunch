@@ -10,7 +10,7 @@ const Header = () => {
       </h1>
       <p className="text-sm mt-2 opacity-80">
         Target per member: <strong>130,000/=</strong>
-      </p>
+      </p>   
     </div>
   );
 };
