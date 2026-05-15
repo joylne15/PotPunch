@@ -1,6 +1,6 @@
 import React from "react";
 
-const StatsCards = ({ totalMembers, totalCollected, totalRemaining }) => {
+const StartCard = ({ totalMembers, totalCollected, totalRemaining }) => {
   const cards = [
     {
       label: "Total Members",
@@ -37,4 +37,4 @@ const StatsCards = ({ totalMembers, totalCollected, totalRemaining }) => {
     </div>
   );
 }
-export default StatsCards;
+export default StartCard;

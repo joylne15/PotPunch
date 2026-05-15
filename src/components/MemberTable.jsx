@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function MembersTable({ members, target, onDelete, onViewHistory }) {
+export default function MemberTable({ members, target, onDelete, onViewHistory }) {
   const [search, setSearch] = useState("");
 
   // ── Filter members based on search input ──
