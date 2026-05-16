@@ -141,11 +141,11 @@ export default function Login() {
               <div className="border-t border-gray-200 my-2"></div>
               <div className="flex justify-between">
                 <span>👤 Member email:</span>
-                <span className="font-medium">juma@system.com</span>
+                <span className="font-medium">joy@gmail.com</span>
               </div>
               <div className="flex justify-between">
                 <span>👤 Member password:</span>
-                <span className="font-medium">member123</span>
+                <span className="font-medium">joy123</span>
               </div>
             </div>
           </div>
