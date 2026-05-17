@@ -80,12 +80,12 @@ export default function AdminDashboard() {
                 {localStorage.getItem("name")}
               </p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition font-medium"
-            >
-              Logout
-            </button>
+           <button
+  onClick={handleLogout}
+  className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-1"
+>
+  ← Logout
+</button>
           </div>
         </div>
       </div>

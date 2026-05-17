@@ -55,14 +55,13 @@ export default function MemberDashboard() {
               <p className="text-xs opacity-75">Welcome back, {name} 👋</p>
             </div>
           </div>
-          <button
-            onClick={handleLogout}
-            className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition font-medium"
-          >
-            Logout
-          </button>
         </div>
-
+<button
+  onClick={handleLogout}
+  className="text-xs bg-white bg-opacity-20 hover:bg-opacity-30 text-white px-4 py-2 rounded-lg transition font-medium flex items-center gap-1"
+>
+  ← Logout
+</button>
         {/* ── Tabs inside header ── */}
         <div className="max-w-2xl mx-auto px-4">
           <div className="flex">
