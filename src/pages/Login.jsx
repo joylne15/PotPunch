@@ -16,16 +16,15 @@ export default function Login() {
     }
 
     // Temporary login — will be replaced by FastAPI later
-    if (role === "admin" && email === "admin@system.com" && password === "admin123") {
+    // Accept any email/password for testing
+    if (role === "admin") {
       localStorage.setItem("role", "admin");
       localStorage.setItem("name", "Admin");
       navigate("/admin");
-    } else if (role === "member" && email === "juma@system.com" && password === "member123") {
+    } else if (role === "member") {
       localStorage.setItem("role", "member");
-      localStorage.setItem("name", "Juma Ally");
+      localStorage.setItem("name", email || "Member");
       navigate("/member");
-    } else {
-      setError("Invalid email or password. Check test credentials below.");
     }
   }
 
@@ -86,7 +85,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              placeholder={role === "admin" ? "admin@system.com" : "juma@system.com"}
+              placeholder={role === "admin" ? "admin" : "member"}
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all"
             />
           </div>
@@ -101,7 +100,7 @@ export default function Login() {
               value={password}
               onChange={(e) => setPass(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleLogin()}
-              placeholder="••••••••"
+              placeholder=""
               className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all"
             />
           </div>
@@ -123,35 +122,11 @@ export default function Login() {
           >
             Sign In →
           </button>
-
-          {/* Test credentials */}
-          <div className="p-4 bg-gray-50 rounded-xl border border-gray-100">
-            <p className="text-xs text-gray-400 font-medium text-center mb-2">
-              🔑 Test credentials
-            </p>
-            <div className="space-y-1.5 text-xs text-gray-500">
-              <div className="flex justify-between">
-                <span>🛡️ Admin email:</span>
-                <span className="font-medium">admin@system.com</span>
-              </div>
-              <div className="flex justify-between">
-                <span>🛡️ Admin password:</span>
-                <span className="font-medium">admin123</span>
-              </div>
-              <div className="border-t border-gray-200 my-2"></div>
-              <div className="flex justify-between">
-                <span>👤 Member email:</span>
-                <span className="font-medium">joy@gmail.com</span>
-              </div>
-              <div className="flex justify-between">
-                <span>👤 Member password:</span>
-                <span className="font-medium">joy123</span>
-              </div>
             </div>
           </div>
 
         </div>
-      </div>
-    </div>
+      
+  
   );
 }

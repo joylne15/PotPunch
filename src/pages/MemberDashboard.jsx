@@ -7,7 +7,7 @@ const TARGET = 130000;
 const memberData = {
   name: "Juma Ally",
   regNo: "REG001",
-  email: "juma@system.com",
+  email: "",
   paid: 80000,
   payments: [
     { amount: 50000, date: "1 May 2026, 10:00 AM" },
@@ -29,9 +29,9 @@ export default function MemberDashboard() {
   }
 
   function getStatusBadge() {
-    if (remaining === 0) return { label: "✅ Fully Paid",  cls: "bg-green-100 text-green-700 border border-green-200" };
-    else if (paid > 0)   return { label: "⏳ Pending",     cls: "bg-amber-100 text-amber-700 border border-amber-200" };
-    else                 return { label: "❌ Not Paid Yet", cls: "bg-red-100 text-red-600 border border-red-200" };
+    if (remaining === 0) return { label: "Fully Paid",  cls: "bg-green-100 text-green-700 border border-green-200" };
+    else if (paid > 0)   return { label: " Pending",     cls: "bg-amber-100 text-amber-700 border border-amber-200" };
+    else                 return { label: " Not Paid Yet", cls: "bg-red-100 text-red-600 border border-red-200" };
   }
 
   const status = getStatusBadge();
@@ -51,7 +51,7 @@ export default function MemberDashboard() {
               {name.charAt(0).toUpperCase()}
             </div>
             <div>
-              <h1 className="text-base font-bold">💰 My Contributions</h1>
+              <h1 className="text-base font-bold"> My Contributions</h1>
               <p className="text-xs opacity-75">Welcome back, {name} 👋</p>
             </div>
           </div>
