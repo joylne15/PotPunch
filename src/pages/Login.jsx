@@ -59,7 +59,7 @@ export default function Login() {
           className="text-white text-center py-8 px-6"
           style={{ background: "linear-gradient(135deg, #1D9E75 0%, #0F6E56 100%)" }}
         >
-          <div className="text-4xl mb-3">💰</div>
+          <div className="text-4xl mb-3"></div>
           <h1 className="text-2xl font-bold mb-1">Money Collection System</h1>
           <p className="text-sm opacity-80">Sign in to your account</p>
         </div>

@@ -68,7 +68,7 @@ export default function AdminDashboard() {
       >
         <div className="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold">💰 Money Collection System</h1>
+            <h1 className="text-xl font-bold"> Money Collection System</h1>
             <p className="text-xs opacity-75 mt-0.5">
               Admin Dashboard — Full Access
             </p>

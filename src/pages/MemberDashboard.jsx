@@ -52,7 +52,7 @@ export default function MemberDashboard() {
             </div>
             <div>
               <h1 className="text-base font-bold"> My Contributions</h1>
-              <p className="text-xs opacity-75">Welcome back, {name} 👋</p>
+              <p className="text-xs opacity-75">Welcome back, {name} </p>
             </div>
           </div>
         </div>
