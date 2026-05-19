@@ -7,16 +7,20 @@ const THREAD_MESSAGES = [
 
 export function ChatPanel() {
   return (
-    <section className="border-r border-slate-200 p-6 lg:col-span-5">
+    <section className="border-r border-slate-200 p-5 lg:col-span-5">
       <header className="mb-6 flex items-center justify-between border-b border-slate-200 pb-4">
         <div className="flex items-center gap-3">
-          <div className="h-12 w-12 rounded-full bg-slate-200" />
+              <div className="grid h-11 w-11 place-items-center rounded-full bg-slate-200 text-sm font-bold text-slate-600">
+                AS
+              </div>
           <div>
             <h4 className="font-bold text-slate-900">Ajoy Sarkar</h4>
             <p className="text-sm text-emerald-500">Online</p>
           </div>
         </div>
-        <button className="h-10 w-10 rounded-full bg-slate-100 text-lg">?</button>
+        <button className="h-10 w-10 rounded-lg bg-slate-100 text-sm font-bold text-slate-600">
+          ...
+        </button>
       </header>
 
       <div className="space-y-4">
@@ -25,8 +29,8 @@ export function ChatPanel() {
             key={`${message.side}-${index}`}
             className={`max-w-[70%] p-3 text-sm ${
               message.side === "right"
-                ? "ml-auto rounded-l-lg rounded-br-lg bg-emerald-500 text-white"
-                : "rounded-r-lg rounded-bl-lg bg-slate-100 text-slate-800"
+                ? "ml-auto rounded-lg bg-emerald-500 text-white"
+                : "rounded-lg bg-slate-100 text-slate-800"
             }`}
           >
             {message.text}

@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
-import type { NavIconKey, NavItem } from "../../constants/navigation";
+import type { NavItem } from "../../constants/navigation";
 import {
-  AlertIcon,
   ChevronCollapseIcon,
   ChevronExpandIcon,
-  DashboardIcon,
   LogoutIcon,
-  MessageIcon,
-  UsersIcon,
 } from "./icons";
+import { NavIcon } from "./NavIcon";
 
 type SidebarProps = {
   currentPath: string;
@@ -17,19 +14,6 @@ type SidebarProps = {
   isCollapsed: boolean;
   onToggleCollapse: () => void;
 };
-
-function NavIcon({ icon, className }: { icon: NavIconKey; className?: string }) {
-  switch (icon) {
-    case "dashboard":
-      return <DashboardIcon className={className} />;
-    case "messages":
-      return <MessageIcon className={className} />;
-    case "users":
-      return <UsersIcon className={className} />;
-    default:
-      return <AlertIcon className={className} />;
-  }
-}
 
 export function Sidebar({
   currentPath,
@@ -40,7 +24,7 @@ export function Sidebar({
 }: SidebarProps) {
   return (
     <aside
-      className={`hidden min-h-screen border-r border-slate-200 bg-white transition-[width] duration-300 xl:block ${
+      className={`hidden min-h-screen border-r border-slate-200 bg-white shadow-[8px_0_30px_rgba(15,23,42,0.03)] transition-[width] duration-300 xl:block ${
         isCollapsed ? "w-[96px]" : "w-[300px]"
       }`}
     >
@@ -50,7 +34,7 @@ export function Sidebar({
         }`}
       >
         <div className="flex items-center gap-2 overflow-hidden">
-          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500 font-bold text-white">
+          <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-emerald-500 font-bold text-white">
             PP
           </div>
           {!isCollapsed ? (
@@ -79,19 +63,19 @@ export function Sidebar({
             <Link
               key={item.path}
               to={item.path}
-              className={`group flex items-center rounded-xl transition ${
+              className={`group relative flex items-center rounded-lg transition ${
                 isCollapsed ? "justify-center px-2 py-3" : "gap-3 px-4 py-3"
               } ${
                 isActive
-                  ? "bg-emerald-50 text-emerald-600"
+                  ? "bg-emerald-50 text-emerald-700"
                   : "text-slate-700 hover:bg-slate-100"
               }`}
               title={isCollapsed ? item.label : undefined}
             >
-              <NavIcon
-                icon={item.icon}
-                className="h-5 w-5 shrink-0"
-              />
+              {isActive && !isCollapsed ? (
+                <span className="absolute left-0 top-2 h-7 w-1 rounded-r bg-emerald-500" />
+              ) : null}
+              <NavIcon icon={item.icon} className="h-5 w-5 shrink-0" />
               {!isCollapsed ? (
                 <span className="text-base font-medium">{item.label}</span>
               ) : null}
@@ -101,7 +85,7 @@ export function Sidebar({
 
         <button
           onClick={onLogout}
-          className={`mt-6 flex w-full items-center rounded-xl border border-rose-200 text-rose-500 transition hover:bg-rose-50 ${
+          className={`mt-6 flex w-full items-center rounded-lg border border-rose-200 text-rose-500 transition hover:bg-rose-50 ${
             isCollapsed ? "justify-center px-2 py-3" : "gap-3 px-4 py-3"
           }`}
           title={isCollapsed ? "Logout" : undefined}

@@ -1,1 +1,27 @@
 @import "tailwindcss";
+
+@layer base {
+  html {
+    background: #f1f5f9;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    font-family:
+      "Inter",
+      "Segoe UI",
+      system-ui,
+      sans-serif;
+    color: #0f172a;
+  }
+
+  button,
+  input {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}

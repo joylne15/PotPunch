@@ -15,7 +15,7 @@ export function TopHeader({
 }: TopHeaderProps) {
   return (
     <header
-      className={`fixed right-0 top-0 z-20 hidden h-[108px] items-center justify-between border-b border-slate-200 bg-white px-10 md:flex ${
+      className={`fixed right-0 top-0 z-20 hidden h-[108px] items-center justify-between border-b border-slate-200 bg-white px-8 md:flex ${
         sidebarCollapsed ? "xl:left-[96px]" : "xl:left-[300px]"
       }`}
     >
@@ -25,7 +25,7 @@ export function TopHeader({
       </div>
 
       <div className="flex items-center gap-4">
-        <label className="flex h-14 w-[320px] items-center gap-3 rounded-lg bg-slate-100 px-4">
+        <label className="flex h-12 w-[320px] items-center gap-3 rounded-lg bg-slate-100 px-4">
           <SearchIcon className="h-4 w-4 text-slate-500" />
           <input
             className="w-full bg-transparent text-sm text-slate-700 placeholder:text-slate-500 focus:outline-none"
@@ -34,21 +34,22 @@ export function TopHeader({
         </label>
 
         <button
-          className="grid h-12 w-12 place-items-center rounded-xl border border-emerald-300 text-slate-700 transition hover:bg-emerald-50"
+          className="grid h-12 w-12 place-items-center rounded-lg border border-emerald-200 text-slate-700 transition hover:bg-emerald-50"
           aria-label="Toggle theme"
         >
           <MoonIcon className="h-5 w-5" />
         </button>
 
         <button
-          className="grid h-12 w-12 place-items-center rounded-xl border border-emerald-300 text-slate-700 transition hover:bg-emerald-50"
+          className="relative grid h-12 w-12 place-items-center rounded-lg border border-emerald-200 text-slate-700 transition hover:bg-emerald-50"
           aria-label="Notifications"
         >
           <BellIcon className="h-5 w-5" />
+          <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-rose-500" />
         </button>
 
         <div className="flex items-center gap-3">
-          <div className="grid h-12 w-12 place-items-center rounded-xl bg-slate-200 font-semibold text-slate-700">
+          <div className="grid h-12 w-12 place-items-center rounded-lg bg-slate-200 font-semibold text-slate-700">
             JD
           </div>
           <div>

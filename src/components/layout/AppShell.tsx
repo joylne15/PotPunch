@@ -1,6 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { NAV_ITEMS } from "../../constants/navigation";
+import { MobileHeader } from "./MobileHeader";
 import { Sidebar } from "./Sidebar";
 import { TopHeader } from "./TopHeader";
 
@@ -46,13 +47,18 @@ export function AppShell({
         />
 
         <div className="flex-1">
+          <MobileHeader
+            currentPath={location.pathname}
+            title={title}
+            profileName={profileName}
+          />
           <TopHeader
             title={title}
             subtitle={subtitle}
             profileName={profileName}
             sidebarCollapsed={sidebarCollapsed}
           />
-          <main className="px-6 pb-8 pt-[100px] md:px-10 md:pt-[136px]">
+          <main className="px-4 pb-8 pt-[136px] md:px-8 md:pt-[136px] xl:px-10">
             {children}
           </main>
         </div>

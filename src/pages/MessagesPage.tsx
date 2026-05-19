@@ -11,7 +11,7 @@ type MessagesPageProps = {
 export function MessagesPage({ onLogout, profileName }: MessagesPageProps) {
   return (
     <AppShell title="Messages" onLogout={onLogout} profileName={profileName}>
-      <section className="grid gap-0 overflow-hidden rounded-2xl border border-slate-200 bg-white lg:grid-cols-12">
+      <section className="grid gap-0 overflow-hidden rounded-lg border border-slate-200 bg-white lg:grid-cols-12">
         <ConversationList />
         <ChatPanel />
         <UserInfoPanel />

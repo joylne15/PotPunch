@@ -31,17 +31,17 @@ export function AuthPage({
   return (
     <section className="min-h-screen bg-white">
       <div className="flex min-h-screen flex-col lg:flex-row">
-        <div className="w-full px-5 pt-10 lg:w-1/2 xl:pl-12">
+        <div className="w-full px-5 pt-8 lg:w-1/2 xl:pl-12">
           <header className="mb-12 flex items-center gap-3 text-2xl font-bold text-emerald-500">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500 text-lg text-white">
+            <span className="grid h-10 w-10 place-items-center rounded-lg bg-emerald-500 text-lg text-white">
               PP
             </span>
             <span>PotPunch</span>
           </header>
 
-          <div className="mx-auto max-w-[460px] pb-16 pt-10">
+          <div className="mx-auto max-w-[460px] pb-16 pt-6">
             <header className="mb-8 text-center">
-              <h2 className="mb-2 text-4xl font-semibold text-slate-900">{title}</h2>
+              <h2 className="mb-2 text-3xl font-semibold text-slate-900">{title}</h2>
               <p className="text-base font-medium text-slate-500">{subtitle}</p>
             </header>
 
@@ -63,24 +63,24 @@ export function AuthPage({
               {mode === "signup" ? (
                 <div className="grid gap-4 md:grid-cols-2">
                   <input
-                    className="h-14 rounded-lg border border-slate-300 px-4 text-sm"
+                    className="h-12 rounded-lg border border-slate-300 px-4 text-sm outline-none focus:border-emerald-500"
                     placeholder="First name"
                   />
                   <input
-                    className="h-14 rounded-lg border border-slate-300 px-4 text-sm"
+                    className="h-12 rounded-lg border border-slate-300 px-4 text-sm outline-none focus:border-emerald-500"
                     placeholder="Last name"
                   />
                 </div>
               ) : null}
 
               <input
-                className="h-14 w-full rounded-lg border border-slate-300 px-4 text-sm"
+                className="h-12 w-full rounded-lg border border-slate-300 px-4 text-sm outline-none focus:border-emerald-500"
                 placeholder="Email"
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
               <input
-                className="h-14 w-full rounded-lg border border-slate-300 px-4 text-sm"
+                className="h-12 w-full rounded-lg border border-slate-300 px-4 text-sm outline-none focus:border-emerald-500"
                 placeholder="Password"
                 type="password"
                 value={password}
@@ -89,7 +89,7 @@ export function AuthPage({
 
               {mode === "signup" ? (
                 <input
-                  className="h-14 w-full rounded-lg border border-slate-300 px-4 text-sm"
+                  className="h-12 w-full rounded-lg border border-slate-300 px-4 text-sm outline-none focus:border-emerald-500"
                   placeholder="Confirm Password"
                   type="password"
                 />
@@ -112,13 +112,22 @@ export function AuthPage({
           </div>
         </div>
 
-        <div className="relative hidden min-h-screen w-1/2 bg-sky-50 p-20 lg:block">
-          <div className="grid h-full place-items-center rounded-3xl border border-emerald-100 bg-white/70 p-12">
-            <div className="text-center">
-              <h3 className="mb-4 text-4xl font-semibold text-slate-900">Fast, Focused, Reliable</h3>
-              <p className="text-sm font-medium text-slate-600">
-                PotPunch helps your team manage contributions, conversations, and reporting from one serious workspace.
-              </p>
+        <div className="relative hidden min-h-screen w-1/2 bg-slate-100 p-12 lg:block">
+          <div className="grid h-full content-center gap-4">
+            <div className="rounded-lg border border-slate-200 bg-white p-6">
+              <p className="text-sm font-bold text-emerald-700">Today</p>
+              <p className="mt-3 text-4xl font-bold text-slate-900">88,400</p>
+              <p className="mt-2 text-sm text-slate-500">Collected from 26 confirmed payments.</p>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="rounded-lg border border-slate-200 bg-white p-5">
+                <p className="text-sm font-semibold text-slate-500">Open reminders</p>
+                <p className="mt-2 text-2xl font-bold text-amber-600">18</p>
+              </div>
+              <div className="rounded-lg border border-slate-200 bg-white p-5">
+                <p className="text-sm font-semibold text-slate-500">Members</p>
+                <p className="mt-2 text-2xl font-bold text-slate-900">322</p>
+              </div>
             </div>
           </div>
         </div>

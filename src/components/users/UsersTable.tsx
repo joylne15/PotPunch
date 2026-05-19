@@ -9,7 +9,7 @@ const USERS = [
 
 export function UsersTable() {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="rounded-lg border border-slate-200 bg-white p-5">
       <div className="mb-4 flex items-center justify-between gap-3">
         <input
           className="h-12 w-full max-w-xl rounded-lg bg-slate-100 px-4 text-sm placeholder:text-slate-500"

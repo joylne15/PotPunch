@@ -8,8 +8,8 @@ const CONVERSATIONS = [
 
 export function ConversationList() {
   return (
-    <aside className="border-r border-slate-200 p-6 lg:col-span-4">
-      <h3 className="mb-5 text-3xl font-semibold text-slate-900">Messages (22)</h3>
+    <aside className="border-r border-slate-200 p-5 lg:col-span-4">
+      <h3 className="mb-5 text-2xl font-semibold text-slate-900">Messages (22)</h3>
       <input
         className="mb-4 h-12 w-full rounded-lg bg-slate-100 px-4 text-sm placeholder:text-slate-500"
         placeholder="Search Message"
@@ -21,7 +21,13 @@ export function ConversationList() {
             className="flex items-center justify-between rounded-lg p-3 transition hover:bg-slate-100"
           >
             <div className="flex items-center gap-3">
-              <div className="h-12 w-12 rounded-full bg-slate-200" />
+              <div className="grid h-11 w-11 place-items-center rounded-full bg-slate-200 text-sm font-bold text-slate-600">
+                {conversation.name
+                  .split(" ")
+                  .map((part) => part[0])
+                  .join("")
+                  .slice(0, 2)}
+              </div>
               <div>
                 <p className="font-bold text-slate-900">{conversation.name}</p>
                 <p className="text-sm text-slate-500">{conversation.preview}</p>
