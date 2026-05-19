@@ -139,7 +139,7 @@ export default function MemberDashboard() {
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
               <div className="flex justify-between items-center mb-3">
                 <h2 className="text-sm font-semibold text-gray-700">
-                  📊 Payment Progress
+                   Payment Progress
                 </h2>
                 <span className="text-xs font-bold" style={{ color: "#1D9E75" }}>
                   {pct}% complete
@@ -174,7 +174,7 @@ export default function MemberDashboard() {
                   </p>
                 </div>
                 <div className="bg-amber-50 border border-amber-100 rounded-xl p-4">
-                  <p className="text-xs text-amber-600 mb-1">⏳ Still Remaining</p>
+                  <p className="text-xs text-amber-600 mb-1"> Still Remaining</p>
                   <p className="text-lg font-bold text-amber-700">
                     {remaining.toLocaleString()}/=
                   </p>
@@ -188,7 +188,7 @@ export default function MemberDashboard() {
             {/* Target info card */}
             <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5">
               <h2 className="text-sm font-semibold text-gray-700 mb-4">
-                🎯 Contribution Target
+                 Contribution Target
               </h2>
               <div className="flex justify-between items-center py-2 border-b border-gray-100">
                 <span className="text-xs text-gray-500">Target amount</span>
