@@ -15,7 +15,7 @@ export function TopHeader({
 }: TopHeaderProps) {
   return (
     <header
-      className={`fixed right-0 top-0 z-20 hidden h-[108px] items-center justify-between border-b border-slate-200 bg-white px-8 md:flex ${
+      className={`fixed right-0 top-0 z-20 hidden  items-center justify-between border-b border-slate-200 bg-white px-8 md:flex ${
         sidebarCollapsed ? "xl:left-[96px]" : "xl:left-[300px]"
       }`}
     >

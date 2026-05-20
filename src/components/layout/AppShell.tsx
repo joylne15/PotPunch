@@ -58,7 +58,7 @@ export function AppShell({
             profileName={profileName}
             sidebarCollapsed={sidebarCollapsed}
           />
-          <main className="px-4 pb-8 pt-[136px] md:px-8 md:pt-[136px] xl:px-10">
+          <main className="px-4 pb-8 md:px-8  xl:px-10">
             {children}
           </main>
         </div>

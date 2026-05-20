@@ -16,7 +16,7 @@ export function MembersPreview() {
       </div>
 
       <div className="overflow-x-auto">
-        <table className="w-full min-w-[520px] text-left text-sm">
+        <table className="w-full text-left text-sm">
           <thead>
             <tr className="border-b border-slate-200 text-xs font-bold uppercase text-slate-500">
               <th className="pb-3">Member</th>

@@ -29,7 +29,7 @@ export function Sidebar({
       }`}
     >
       <div
-        className={`flex h-[108px] items-center border-b border-slate-100 ${
+        className={`flex  items-center border-b border-slate-100 ${
           isCollapsed ? "justify-center gap-2 px-2" : "justify-between px-6"
         }`}
       >
