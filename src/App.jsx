@@ -41,7 +41,7 @@ function LoginPage({ onLogin }) {
           <div className="inline-flex items-center justify-center w-14 h-14 bg-blue-600 rounded-xl mb-4">
             <span className="text-white text-xl font-bold">CS</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">CollectSys</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Collection System</h1>
           <p className="text-sm text-gray-500 mt-1">Money Collection Management System</p>
         </div>
         <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">

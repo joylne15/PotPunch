@@ -65,7 +65,7 @@ export default function Sidebar({ activeNav, onNavChange, onLogout }) {
             <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-sm">
               CS
             </div>
-            <span className="font-semibold text-lg">CollectSys</span>
+            <span className="font-semibold text-lg">Collection System</span>
           </div>
         )}
         <button
