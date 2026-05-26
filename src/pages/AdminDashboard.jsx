@@ -160,11 +160,11 @@ export default function AdminDashboard({ user, onLogout }) {
                   <div className="grid grid-cols-2 gap-3">
                     <div>
                       <p className="text-xs text-gray-400">Total Paid</p>
-                      <p className="font-semibold text-emerald-600">KSH {selectedMember.totalPaid?.toLocaleString()}</p>
+                      <p className="font-semibold text-emerald-600">TSH {selectedMember.totalPaid?.toLocaleString()}</p>
                     </div>
                     <div>
                       <p className="text-xs text-gray-400">Remaining</p>
-                      <p className="font-semibold text-orange-600">KSH {selectedMember.remaining?.toLocaleString()}</p>
+                      <p className="font-semibold text-orange-600">TSH {selectedMember.remaining?.toLocaleString()}</p>
                     </div>
                   </div>
                   <p className="text-xs text-gray-400 mt-3">
