@@ -17,7 +17,7 @@ export default function RecordPaymentForm({ members, onSubmit, loading = false }
 
   const memberOptions = members.map((m) => ({
     value: m.id,
-    label: `${m.name} — KSH ${m.remaining?.toLocaleString()} remaining`,
+    label: `${m.name} — TSH ${m.remaining?.toLocaleString()} remaining`,
   }));
 
   const handleChange = (e) => {
@@ -40,7 +40,7 @@ export default function RecordPaymentForm({ members, onSubmit, loading = false }
     }
 
     if (selectedMember && Number(formData.amount) > selectedMember.remaining) {
-      newErrors.amount = `Amount exceeds remaining balance (KSH ${selectedMember.remaining?.toLocaleString()})`;
+      newErrors.amount = `Amount exceeds remaining balance (TSH ${selectedMember.remaining?.toLocaleString()})`;
     }
 
     if (!formData.date) {
@@ -89,17 +89,17 @@ export default function RecordPaymentForm({ members, onSubmit, loading = false }
           <div className="bg-blue-50 rounded-lg px-4 py-3 text-sm">
             <div className="flex justify-between">
               <span className="text-blue-700">Total Paid:</span>
-              <span className="font-semibold text-blue-800">KSH {selectedMember.totalPaid?.toLocaleString()}</span>
+              <span className="font-semibold text-blue-800">TSH {selectedMember.totalPaid?.toLocaleString()}</span>
             </div>
             <div className="flex justify-between mt-1">
               <span className="text-blue-700">Remaining:</span>
-              <span className="font-semibold text-blue-800">KSH {selectedMember.remaining?.toLocaleString()}</span>
+              <span className="font-semibold text-blue-800">TSH {selectedMember.remaining?.toLocaleString()}</span>
             </div>
           </div>
         )}
 
         <Input
-          label="Amount (KSH)"
+          label="Amount (TSH)"
           name="amount"
           type="number"
           value={formData.amount}

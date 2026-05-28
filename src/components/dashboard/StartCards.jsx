@@ -41,20 +41,20 @@ export default function StatCards({ stats }) {
     {
       key: 'collected',
       label: 'Total Collected',
-      value: `KSH ${stats.totalCollected?.toLocaleString()}`,
+      value: `TSH ${stats.totalCollected?.toLocaleString()}`,
       subtext: `From ${stats.paidMembers} members`,
     },
     {
       key: 'remaining',
       label: 'Remaining',
-      value: `KSH ${stats.totalRemaining?.toLocaleString()}`,
+      value: `TSH ${stats.totalRemaining?.toLocaleString()}`,
       subtext: `${stats.unpaidMembers} unpaid`,
     },
     {
       key: 'progress',
       label: 'Progress',
       value: `${stats.progressPercent}%`,
-      subtext: `Target: KSH ${stats.target?.toLocaleString()}`,
+      subtext: `Target: TSH ${stats.target?.toLocaleString()}`,
     },
   ];
 
