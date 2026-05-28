@@ -111,7 +111,7 @@ export default function MemberDashboard({ user, onLogout }) {
                     <div key={payment.id} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
                       <div>
                         <p className="text-sm font-medium text-gray-800">
-                          KSH {payment.amount?.toLocaleString()}
+                          TSH {payment.amount?.toLocaleString()}
                         </p>
                         <p className="text-xs text-gray-400">{payment.note}</p>
                       </div>
@@ -146,7 +146,7 @@ export default function MemberDashboard({ user, onLogout }) {
                           {new Date(payment.date).toLocaleDateString()}
                         </td>
                         <td className="px-5 py-3.5 text-sm font-medium text-emerald-600">
-                          KSH {payment.amount?.toLocaleString()}
+                          TSH {payment.amount?.toLocaleString()}
                         </td>
                         <td className="px-5 py-3.5 text-sm text-gray-500">
                           {payment.note}
@@ -161,7 +161,7 @@ export default function MemberDashboard({ user, onLogout }) {
               <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
                 <span className="text-sm font-semibold text-gray-700">Total Paid</span>
                 <span className="text-sm font-bold text-emerald-600">
-                  KSH {memberData.totalPaid?.toLocaleString()}
+                  TSH {memberData.totalPaid?.toLocaleString()}
                 </span>
               </div>
             </Card>
