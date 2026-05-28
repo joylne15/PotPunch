@@ -73,7 +73,7 @@ export default function ActivityFeed({ activities = [] }) {
                   )}
                   {activity.type === 'payment' && (
                     <span className="font-semibold text-emerald-600">
-                      KSH {activity.amount?.toLocaleString()}
+                   TSH {activity.amount?.toLocaleString()}
                     </span>
                   )}
                   {activity.type === 'member_added' && (
@@ -87,7 +87,7 @@ export default function ActivityFeed({ activities = [] }) {
                   )}
                   {activity.type === 'target_updated' && (
                     <span className="font-semibold text-purple-600">
-                      KSH {activity.amount?.toLocaleString()}
+                      TSH {activity.amount?.toLocaleString()}
                     </span>
                   )}
                 </p>

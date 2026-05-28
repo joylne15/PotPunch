@@ -71,15 +71,15 @@ export default function MemberDashboard({ user, onLogout }) {
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Total Paid</p>
-                <p className="text-2xl font-bold text-emerald-600 mt-2">KSH {memberData.totalPaid?.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-emerald-600 mt-2">TSH {memberData.totalPaid?.toLocaleString()}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Remaining</p>
-                <p className="text-2xl font-bold text-orange-600 mt-2">KSH {memberData.remaining?.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-orange-600 mt-2">TSH {memberData.remaining?.toLocaleString()}</p>
               </div>
               <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
                 <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Target</p>
-                <p className="text-2xl font-bold text-gray-800 mt-2">KSH {memberData.target?.toLocaleString()}</p>
+                <p className="text-2xl font-bold text-gray-800 mt-2">TSH {memberData.target?.toLocaleString()}</p>
               </div>
             </div>
 

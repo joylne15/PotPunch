@@ -218,7 +218,7 @@ export default function AdminDashboard({ user, onLogout }) {
               <div className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Target Amount (KSH)
+                    Target Amount (TSH)
                   </label>
                   <input
                     type="number"

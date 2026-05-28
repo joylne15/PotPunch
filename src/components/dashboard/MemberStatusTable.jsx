@@ -103,10 +103,10 @@ export default function MemberStatusTable({ members, onViewHistory, onDelete }) 
                     </div>
                   </td>
                   <td className="px-5 py-3.5 text-sm text-gray-700 font-medium">
-                    KSH {member.totalPaid?.toLocaleString()}
+                    TSH {member.totalPaid?.toLocaleString()}
                   </td>
                   <td className="px-5 py-3.5 text-sm text-gray-700 font-medium">
-                    KSH {member.remaining?.toLocaleString()}
+                    TSH {member.remaining?.toLocaleString()}
                   </td>
                   <td className="px-5 py-3.5">
                     <StatusBadge status={getStatus(member)} />
