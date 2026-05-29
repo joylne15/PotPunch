@@ -1,105 +1,119 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import AppShell from '../components/layout/AppShell';
-import StatCards from '../components/dashboard/StartCards';
+import StatCards from '../components/dashboard/StatCards';
 import RecordPaymentForm from '../components/dashboard/RecordPaymentForm';
 import AddMemberForm from '../components/dashboard/AddMemberForm';
 import MemberStatusTable from '../components/dashboard/MemberStatusTable';
 import CollectionProgress from '../components/dashboard/CollectionProgress';
 import ActivityFeed from '../components/dashboard/ActivityFeed';
 
-const INITIAL_MEMBERS = [
-  { id: 1, name: 'Alice Wanjiku', phone: '+254 712 345 678', totalPaid: 10000, remaining: 3000 },
-  { id: 2, name: 'Brian Odhiambo', phone: '+254 723 456 789', totalPaid: 13000, remaining: 0 },
-  { id: 3, name: 'Charity Achieng', phone: '+254 734 567 890', totalPaid: 5000, remaining: 8000 },
-  { id: 4, name: 'David Kamau', phone: '+254 745 678 901', totalPaid: 0, remaining: 13000 },
-  { id: 5, name: 'Esther Njoroge', phone: '+254 756 789 012', totalPaid: 8000, remaining: 5000 },
-  { id: 6, name: 'Francis Mwangi', phone: '+254 767 890 123', totalPaid: 11000, remaining: 2000 },
-  { id: 7, name: 'Grace Wambui', phone: '+254 778 901 234', totalPaid: 13000, remaining: 0 },
-  { id: 8, name: 'Henry Kiprop', phone: '+254 789 012 345', totalPaid: 2000, remaining: 11000 },
-];
-
-const INITIAL_TARGET = 130000;
+const API = 'http://localhost:8000';
 
 export default function AdminDashboard({ user, onLogout }) {
-  const [members, setMembers] = useState(INITIAL_MEMBERS);
-  const [target, setTarget] = useState(INITIAL_TARGET);
-  const [activities, setActivities] = useState([
-    { type: 'payment', memberName: 'Grace Wambui', amount: 13000, date: new Date(Date.now() - 1800000).toISOString(), note: 'Full payment' },
-    { type: 'payment', memberName: 'Francis Mwangi', amount: 5000, date: new Date(Date.now() - 7200000).toISOString(), note: 'Monthly contribution' },
-    { type: 'member_added', memberName: 'Henry Kiprop', date: new Date(Date.now() - 86400000).toISOString() },
-    { type: 'payment', memberName: 'Brian Odhiambo', amount: 13000, date: new Date(Date.now() - 172800000).toISOString(), note: 'Full settlement' },
-    { type: 'target_updated', memberName: 'System', amount: 130000, date: new Date(Date.now() - 259200000).toISOString(), note: 'Target set for this cycle' },
-  ]);
+  const [members, setMembers] = useState([]);
+  const [target, setTarget] = useState(130000);
+  const [activities, setActivities] = useState([]);
   const [activeNav, setActiveNav] = useState('dashboard');
   const [loading, setLoading] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
 
-  // Calculate stats
+  // Fetch all data from API
+  const fetchData = async () => {
+    try {
+      const [membersRes, statsRes, activityRes] = await Promise.all([
+        fetch(`${API}/api/members/`),
+        fetch(`${API}/api/stats`),
+        fetch(`${API}/api/activity`),
+      ]);
+
+      const membersData = await membersRes.json();
+      const statsData = await statsRes.json();
+      const activityData = await activityRes.json();
+
+      setMembers(membersData);
+      setTarget(statsData.target);
+      setActivities(activityData);
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+    }
+  };
+
+  // Load data on mount
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Calculate stats from members + target
   const stats = useMemo(() => {
     const totalMembers = members.length;
-    const activeMembers = members.filter((m) => m.totalPaid > 0).length;
-    const totalCollected = members.reduce((sum, m) => sum + m.totalPaid, 0);
+    const activeMembers = members.filter((m) => m.total_paid > 0).length;
+    const totalCollected = members.reduce((sum, m) => sum + m.total_paid, 0);
     const totalRemaining = members.reduce((sum, m) => sum + m.remaining, 0);
     const paidMembers = members.filter((m) => m.remaining <= 0).length;
-    const unpaidMembers = members.filter((m) => m.totalPaid === 0).length;
+    const unpaidMembers = members.filter((m) => m.total_paid === 0).length;
     const progressPercent = target > 0 ? Math.min(Math.round((totalCollected / target) * 100), 100) : 0;
 
     return { totalMembers, activeMembers, totalCollected, totalRemaining, paidMembers, unpaidMembers, progressPercent, target };
   }, [members, target]);
 
-  // Add member
-  const handleAddMember = (data) => {
-    const newMember = {
-      id: Date.now(),
-      name: data.name,
-      phone: data.phone,
-      totalPaid: 0,
-      remaining: target / Math.max(members.length + 1, 1),
-    };
+  // Add member via API
+  const handleAddMember = async (data) => {
+    try {
+      const res = await fetch(`${API}/api/members/`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
 
-    // Recalculate remaining for all members based on new target split
-    const perMember = Math.ceil(target / (members.length + 1));
-    setMembers((prev) => [
-      ...prev.map((m) => ({ ...m, remaining: Math.max(perMember - m.totalPaid, 0) })),
-      { ...newMember, remaining: perMember },
-    ]);
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.detail || 'Failed to add member');
+        return;
+      }
 
-    setActivities((prev) => [
-      { type: 'member_added', memberName: data.name, date: new Date().toISOString() },
-      ...prev,
-    ]);
+      fetchData();
+    } catch (err) {
+      console.error('Failed to add member:', err);
+    }
   };
 
-  // Record payment
-  const handleRecordPayment = (data) => {
+  // Record payment via API
+  const handleRecordPayment = async (data) => {
     setLoading(true);
-    setTimeout(() => {
-      setMembers((prev) =>
-        prev.map((m) =>
-          m.id === data.memberId
-            ? { ...m, totalPaid: m.totalPaid + data.amount, remaining: Math.max(m.remaining - data.amount, 0) }
-            : m
-        )
-      );
+    try {
+      const res = await fetch(`${API}/api/members/${data.memberId}/payment`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ member_id: data.memberId, amount: data.amount, note: data.note }),
+      });
 
-      const member = members.find((m) => m.id === data.memberId);
-      setActivities((prev) => [
-        { type: 'payment', memberName: member?.name || 'Unknown', amount: data.amount, date: new Date().toISOString(), note: data.note },
-        ...prev,
-      ]);
+      if (!res.ok) {
+        const err = await res.json();
+        alert(err.detail || 'Failed to record payment');
+        return;
+      }
 
-      setLoading(false);
-    }, 500);
+      fetchData();
+    } catch (err) {
+      console.error('Failed to record payment:', err);
+    }
+    setLoading(false);
   };
 
-  // Delete member
-  const handleDeleteMember = (id) => {
-    const member = members.find((m) => m.id === id);
-    setMembers((prev) => prev.filter((m) => m.id !== id));
-    setActivities((prev) => [
-      { type: 'member_deleted', memberName: member?.name || 'Unknown', date: new Date().toISOString() },
-      ...prev,
-    ]);
+  // Delete member via API
+  const handleDeleteMember = async (id) => {
+    try {
+      const res = await fetch(`${API}/api/members/${id}`, { method: 'DELETE' });
+
+      if (!res.ok) {
+        alert('Failed to delete member');
+        return;
+      }
+
+      fetchData();
+    } catch (err) {
+      console.error('Failed to delete member:', err);
+    }
   };
 
   // View member history
@@ -108,8 +122,32 @@ export default function AdminDashboard({ user, onLogout }) {
     setActiveNav('members');
   };
 
+  // Update target via API
+  const handleUpdateTarget = async (newTarget) => {
+    setTarget(newTarget);
+    try {
+      await fetch(`${API}/api/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ key: 'target', value: String(newTarget) }),
+      });
+      fetchData();
+    } catch (err) {
+      console.error('Failed to update target:', err);
+    }
+  };
+
   // Existing member names for duplicate check
   const existingNames = members.map((m) => m.name);
+
+  // Adapt members for components (API uses snake_case)
+  const adaptedMembers = members.map((m) => ({
+    id: m.id,
+    name: m.name,
+    phone: m.phone,
+    totalPaid: m.total_paid,
+    remaining: m.remaining,
+  }));
 
   // Render content based on active nav
   const renderContent = () => {
@@ -122,7 +160,7 @@ export default function AdminDashboard({ user, onLogout }) {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <div className="lg:col-span-2">
                 <MemberStatusTable
-                  members={members}
+                  members={adaptedMembers}
                   onViewHistory={handleViewHistory}
                   onDelete={handleDeleteMember}
                 />
@@ -139,7 +177,7 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <div className="space-y-6">
             <MemberStatusTable
-              members={members}
+              members={adaptedMembers}
               onViewHistory={handleViewHistory}
               onDelete={handleDeleteMember}
             />
@@ -167,9 +205,6 @@ export default function AdminDashboard({ user, onLogout }) {
                       <p className="font-semibold text-orange-600">TSH {selectedMember.remaining?.toLocaleString()}</p>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-400 mt-3">
-                    Full payment history will be available when backend is connected.
-                  </p>
                 </div>
               </div>
             )}
@@ -180,7 +215,7 @@ export default function AdminDashboard({ user, onLogout }) {
         return (
           <div className="max-w-lg">
             <RecordPaymentForm
-              members={members}
+              members={adaptedMembers}
               onSubmit={handleRecordPayment}
               loading={loading}
             />
@@ -203,7 +238,7 @@ export default function AdminDashboard({ user, onLogout }) {
             <StatCards stats={stats} />
             <CollectionProgress collected={stats.totalCollected} target={target} />
             <MemberStatusTable
-              members={members}
+              members={adaptedMembers}
               onViewHistory={handleViewHistory}
               onDelete={handleDeleteMember}
             />
@@ -223,18 +258,7 @@ export default function AdminDashboard({ user, onLogout }) {
                   <input
                     type="number"
                     value={target}
-                    onChange={(e) => {
-                      const newTarget = Number(e.target.value);
-                      setTarget(newTarget);
-                      const perMember = Math.ceil(newTarget / members.length);
-                      setMembers((prev) =>
-                        prev.map((m) => ({ ...m, remaining: Math.max(perMember - m.totalPaid, 0) }))
-                      );
-                      setActivities((prev) => [
-                        { type: 'target_updated', memberName: 'System', amount: newTarget, date: new Date().toISOString() },
-                        ...prev,
-                      ]);
-                    }}
+                    onChange={(e) => handleUpdateTarget(Number(e.target.value))}
                     className="w-full px-3 py-2.5 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
                   />
                 </div>
