@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import AppShell from '../components/layout/AppShell';
-import StatCards from '../components/dashboard/StatCards';
+import StatCards from '../components/dashboard/StartCards';
 import RecordPaymentForm from '../components/dashboard/RecordPaymentForm';
 import AddMemberForm from '../components/dashboard/AddMemberForm';
 import MemberStatusTable from '../components/dashboard/MemberStatusTable';
