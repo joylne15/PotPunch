@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from './pages/LoginPage';
 import AdminDashboard from './pages/AdminDashboard';
 import MemberDashboard from './pages/MemberDashboard';
+import NotFoundPage from './pages/NotFoundPage';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 
 export default function App() {
@@ -67,17 +68,8 @@ export default function App() {
           }
         />
 
-        {/* Catch all — unknown routes */}
-        <Route
-          path="*"
-          element={
-            user ? (
-              <Navigate to={user.role === 'admin' ? '/admin' : '/member'} replace />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        />
+        {/* Catch all — 404 page */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
   );
 }

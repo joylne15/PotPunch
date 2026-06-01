@@ -1,34 +1,92 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import AppShell from '../components/layout/AppShell';
 import CircularProgress from '../components/common/CircularProgress';
 import StatusBadge from '../components/common/StatusBadge';
 import Card from '../components/common/Card';
 
-export default function MemberDashboard({ user, onLogout }) {
-  // Sample member data — will come from backend later
-  const [memberData] = useState({
-    name: user?.name || 'John Doe',
-    phone: '+254 712 345 678',
-    totalPaid: 8500,
-    target: 13000,
-    remaining: 4500,
-    payments: [
-      { id: 1, amount: 2000, date: '2026-05-20', note: 'Monthly contribution' },
-      { id: 2, amount: 3000, date: '2026-05-10', note: 'Top up payment' },
-      { id: 3, amount: 1500, date: '2026-04-28', note: 'Weekly contribution' },
-      { id: 4, amount: 2000, date: '2026-04-15', note: 'Monthly contribution' },
-    ],
-  });
+const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
+export default function MemberDashboard({ user, onLogout }) {
+  const [memberData, setMemberData] = useState(null);
+  const [pageLoading, setPageLoading] = useState(true);
+  const [pageError, setPageError] = useState(null);
   const [activeNav, setActiveNav] = useState('dashboard');
+  const abortRef = useRef(null);
+
+  const fetchMemberData = useCallback(async () => {
+    if (abortRef.current) abortRef.current.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
+
+    setPageError(null);
+    setPageLoading(true);
+
+    try {
+      // Try to get the member matching the logged-in user
+      const res = await fetch(`${API}/api/members/`, { signal: controller.signal });
+      if (!res.ok) throw new Error('Server unavailable');
+      
+      const allMembers = await res.json();
+      const found = allMembers.find(
+        (m) => m.name?.toLowerCase() === user?.name?.toLowerCase()
+      );
+
+      if (found) {
+        const target = found.target || 130000;
+        setMemberData({
+          name: found.name,
+          phone: found.phone || '',
+          totalPaid: found.total_paid || 0,
+          target: target,
+          remaining: Math.max(0, target - (found.total_paid || 0)),
+          payments: found.payments || [],
+        });
+      } else {
+        // Member not found on server — use local info as fallback
+        setMemberData({
+          name: user?.name || 'Member',
+          phone: '',
+          totalPaid: 0,
+          target: 130000,
+          remaining: 130000,
+          payments: [],
+        });
+        setPageError('Your profile was not found on the server. Data shown is local only.');
+      }
+      setPageError(null);
+    } catch (err) {
+      if (err.name === 'AbortError') return;
+      console.error('Failed to fetch member data:', err);
+      setMemberData({
+        name: user?.name || 'Member',
+        phone: '',
+        totalPaid: 0,
+        target: 130000,
+        remaining: 130000,
+        payments: [],
+      });
+      setPageError('Could not connect to server. Showing offline view.');
+    } finally {
+      setPageLoading(false);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    fetchMemberData();
+    return () => {
+      if (abortRef.current) abortRef.current.abort();
+    };
+  }, [fetchMemberData]);
 
   const status = useMemo(() => {
+    if (!memberData) return 'unpaid';
     if (memberData.remaining <= 0) return 'paid';
     if (memberData.totalPaid > 0) return 'partial';
     return 'unpaid';
   }, [memberData]);
 
   const progressPercent = useMemo(() => {
+    if (!memberData) return 0;
     return memberData.target > 0
       ? Math.min(Math.round((memberData.totalPaid / memberData.target) * 100), 100)
       : 0;
@@ -48,10 +106,33 @@ export default function MemberDashboard({ user, onLogout }) {
   ];
 
   const renderContent = () => {
+    // Loading state
+    if (pageLoading) {
+      return (
+        <div className="flex items-center justify-center py-20">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-sm text-gray-500">Loading your data...</p>
+          </div>
+        </div>
+      );
+    }
+
+    if (!memberData) return null;
+
     switch (activeNav) {
       case 'dashboard':
         return (
           <div className="space-y-6">
+            {/* Error banner */}
+            {pageError && (
+              <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 text-sm text-amber-700 flex items-center gap-2">
+                <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                {pageError}
+              </div>
+            )}
             {/* Welcome + Status */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">

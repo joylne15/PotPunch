@@ -26,6 +26,26 @@ export default function MemberStatusTable({ members, onViewHistory, onDelete }) 
     setConfirmDeleteId(null);
   };
 
+  const handleDeleteClick = (id) => {
+    // If clicking on a different member's delete, reset confirmation
+    if (confirmDeleteId === id) {
+      setConfirmDeleteId(null);
+    } else {
+      setConfirmDeleteId(id);
+    }
+  };
+
+  // Also cancel confirmation when filter/search changes
+  const handleFilterChange = (status) => {
+    setFilterStatus(status);
+    setConfirmDeleteId(null);
+  };
+
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+    setConfirmDeleteId(null);
+  };
+
   const statusCounts = {
     all: members.length,
     paid: members.filter((m) => m.remaining <= 0).length,
@@ -45,7 +65,7 @@ export default function MemberStatusTable({ members, onViewHistory, onDelete }) 
           {['all', 'paid', 'partial', 'unpaid'].map((status) => (
             <button
               key={status}
-              onClick={() => setFilterStatus(status)}
+              onClick={() => handleFilterChange(status)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors duration-150 ${
                 filterStatus === status
                   ? 'bg-blue-600 text-white'
@@ -61,7 +81,7 @@ export default function MemberStatusTable({ members, onViewHistory, onDelete }) 
           type="text"
           placeholder="Search members..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={handleSearchChange}
           className="px-3 py-2 rounded-lg border border-gray-300 text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 w-full sm:w-56"
         />
       </div>
@@ -135,8 +155,8 @@ export default function MemberStatusTable({ members, onViewHistory, onDelete }) 
                         >
                           History
                         </button>
-                        <button
-                          onClick={() => setConfirmDeleteId(member.id)}
+                                                                        <button
+                          onClick={() => handleDeleteClick(member.id)}
                           className="text-xs font-medium text-red-500 hover:text-red-600"
                         >
                           Delete
