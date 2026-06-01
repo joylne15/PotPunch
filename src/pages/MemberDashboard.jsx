@@ -54,18 +54,24 @@ export default function MemberDashboard({ user, onLogout }) {
         setPageError('Your profile was not found on the server. Data shown is local only.');
       }
       setPageError(null);
-    } catch (err) {
+        } catch (err) {
       if (err.name === 'AbortError') return;
       console.error('Failed to fetch member data:', err);
+      // Load demo data so the UI is usable without backend
       setMemberData({
         name: user?.name || 'Member',
-        phone: '',
-        totalPaid: 0,
+        phone: '+254 712 345 678',
+        totalPaid: 8500,
         target: 130000,
-        remaining: 130000,
-        payments: [],
+        remaining: 121500,
+        payments: [
+          { id: 1, amount: 2000, date: new Date(Date.now() - 86400000 * 5).toISOString(), note: 'Weekly contribution' },
+          { id: 2, amount: 3000, date: new Date(Date.now() - 86400000 * 12).toISOString(), note: 'Top up payment' },
+          { id: 3, amount: 1500, date: new Date(Date.now() - 86400000 * 19).toISOString(), note: 'Weekly contribution' },
+          { id: 4, amount: 2000, date: new Date(Date.now() - 86400000 * 26).toISOString(), note: 'Weekly contribution' },
+        ],
       });
-      setPageError('Could not connect to server. Showing offline view.');
+      setPageError('Backend offline — showing demo data.');
     } finally {
       setPageLoading(false);
     }
