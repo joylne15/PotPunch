@@ -10,26 +10,6 @@ import { useToast } from '../components/common/Toast';
 
 const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
-// Demo data used when backend is unavailable
-const DEMO_MEMBERS = [
-  { id: 1, name: 'Alice Mwangi', phone: '+254 712 345 001', total_paid: 65000 },
-  { id: 2, name: 'Bob Ochieng', phone: '+254 712 345 002', total_paid: 130000 },
-  { id: 3, name: 'Carol Wanjiku', phone: '+254 712 345 003', total_paid: 30000 },
-  { id: 4, name: 'David Kamau', phone: '+254 712 345 004', total_paid: 0 },
-  { id: 5, name: 'Eve Nyambura', phone: '+254 712 345 005', total_paid: 95000 },
-  { id: 6, name: 'Frank Otieno', phone: '+254 712 345 006', total_paid: 130000 },
-  { id: 7, name: 'Grace Achieng', phone: '+254 712 345 007', total_paid: 50000 },
-  { id: 8, name: 'Henry Kiprop', phone: '+254 712 345 008', total_paid: 0 },
-];
-
-const DEMO_ACTIVITIES = [
-  { id: 1, action: 'Alice Mwangi made a payment of TSH 10,000', timestamp: new Date(Date.now() - 1800000).toISOString() },
-  { id: 2, action: 'David Kamau was added as a member', timestamp: new Date(Date.now() - 3600000).toISOString() },
-  { id: 3, action: 'Target updated to TSH 130,000', timestamp: new Date(Date.now() - 7200000).toISOString() },
-  { id: 4, action: 'Frank Otieno completed full payment', timestamp: new Date(Date.now() - 14400000).toISOString() },
-  { id: 5, action: 'Grace Achieng made a payment of TSH 15,000', timestamp: new Date(Date.now() - 28800000).toISOString() },
-];
-
 export default function AdminDashboard({ user, onLogout }) {
   const toast = useToast();
   const [members, setMembers] = useState([]);
@@ -73,14 +53,10 @@ export default function AdminDashboard({ user, onLogout }) {
       setTarget(statsData.target);
       setActivities(activityData);
       setPageError(null);
-    } catch (err) {
+        } catch (err) {
       if (err.name === 'AbortError') return;
-      console.error('Failed to fetch data from server, using demo data:', err);
-      // Load demo data so the UI is usable without backend
-      setMembers(DEMO_MEMBERS);
-      setTarget(130000);
-      setActivities(DEMO_ACTIVITIES);
-      setPageError('Backend offline — showing demo data. Actions will not persist.');
+      console.error('Failed to fetch data:', err);
+      setPageError(`Could not reach backend at ${API}. Please start the backend server and click Retry.`);
     } finally {
       if (fetchId === fetchIdRef.current) setPageLoading(false);
     }
@@ -212,32 +188,28 @@ export default function AdminDashboard({ user, onLogout }) {
     }
 
         if (pageError) {
-      return (
-        <div className="space-y-6">
-          {/* Offline warning banner */}
-          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 text-sm text-amber-700 flex items-center gap-2">
-            <svg className="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-            </svg>
-            <span className="flex-1">{pageError}</span>
-            <button
-              onClick={fetchData}
-              className="text-xs font-medium text-amber-800 hover:text-amber-900 underline shrink-0"
-            >
-              Retry
-            </button>
-          </div>
-          {renderDashboardContent()}
-        </div>
-      );
-    }
+          return (
+            <div className="flex items-center justify-center py-20">
+              <div className="text-center max-w-md">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">Backend Required</h3>
+                <p className="text-sm text-gray-500 mb-4">{pageError}</p>
+                <button
+                  onClick={fetchData}
+                  className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+                >
+                  Retry Connection
+                </button>
+              </div>
+            </div>
+          );
+        }
 
-    return renderDashboardContent();
-  };
-
-  // The actual dashboard content (reused by both normal and error states)
-  const renderDashboardContent = () => {
-    switch (activeNav) {
+        switch (activeNav) {
       case 'dashboard':
         return (
           <div className="space-y-6">
