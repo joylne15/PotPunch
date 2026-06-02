@@ -67,14 +67,14 @@ export default function AdminDashboard({ user, onLogout }) {
     return () => { if (abortRef.current) abortRef.current.abort(); };
   }, [fetchData]);
 
-  const stats = useMemo(() => {
+    const stats = useMemo(() => {
     const totalMembers = members.length;
     const activeMembers = members.filter((m) => (m.total_paid || 0) > 0).length;
     const totalCollected = members.reduce((sum, m) => sum + (m.total_paid || 0), 0);
-    const totalTarget = totalMembers * target;
-    const totalRemaining = members.reduce((sum, m) => sum + Math.max(0, target - (m.total_paid || 0)), 0);
-    const paidMembers = members.filter((m) => (m.total_paid || 0) >= target).length;
+    const totalRemaining = members.reduce((sum, m) => sum + (m.remaining || 0), 0);
+    const paidMembers = members.filter((m) => (m.total_paid || 0) >= (m.target || target)).length;
     const unpaidMembers = members.filter((m) => !m.total_paid || m.total_paid === 0).length;
+    const totalTarget = totalCollected + totalRemaining;
     const progressPercent = totalTarget > 0 ? Math.min(Math.round((totalCollected / totalTarget) * 100), 100) : 0;
 
     return { totalMembers, activeMembers, totalCollected, totalRemaining, paidMembers, unpaidMembers, progressPercent, target };
@@ -167,12 +167,12 @@ export default function AdminDashboard({ user, onLogout }) {
 
   const existingNames = members.map((m) => m.name);
 
-  const adaptedMembers = members.map((m) => ({
+    const adaptedMembers = members.map((m) => ({
     id: m.id,
     name: m.name,
     phone: m.phone,
     totalPaid: m.total_paid || 0,
-    remaining: Math.max(0, target - (m.total_paid || 0)),
+    remaining: m.remaining ?? Math.max(0, target - (m.total_paid || 0)),
   }));
 
   const renderContent = () => {
@@ -187,29 +187,52 @@ export default function AdminDashboard({ user, onLogout }) {
       );
     }
 
-        if (pageError) {
-          return (
-            <div className="flex items-center justify-center py-20">
-              <div className="text-center max-w-md">
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
-                  <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                  </svg>
-                </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">Backend Required</h3>
-                <p className="text-sm text-gray-500 mb-4">{pageError}</p>
-                <button
-                  onClick={fetchData}
-                  className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                  Retry Connection
-                </button>
-              </div>
-            </div>
-          );
-        }
 
-        switch (activeNav) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            if (pageError) {
+      return (
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-50 flex items-center justify-center">
+              <svg className="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h3 className="text-lg font-semibold text-gray-800 mb-2">Backend Required</h3>
+            <p className="text-sm text-gray-500 mb-4">{pageError}</p>
+            <button
+              onClick={fetchData}
+              className="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Retry Connection
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    switch (activeNav) {
       case 'dashboard':
         return (
           <div className="space-y-6">
